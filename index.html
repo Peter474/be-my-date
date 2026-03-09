@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Will you be my date? 🥺</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Pacifico&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --rose:#ff4d6d;--rose2:#ff85a1;--blush:#ffb3c1;
+  --gold:#ffca3a;--lilac:#c77dff;--dark:#1a0814;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;overflow-x:hidden}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  min-height:100svh;
+  position:relative;
+}
+
+/* ── blobs ── */
+.blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.22;pointer-events:none;animation:blobF ease-in-out infinite alternate;}
+.b1{width:500px;height:500px;background:var(--rose);top:-150px;left:-150px;animation-duration:9s}
+.b2{width:400px;height:400px;background:var(--lilac);bottom:-120px;right:-120px;animation-duration:12s;animation-delay:-4s}
+.b3{width:280px;height:280px;background:var(--gold);top:40%;left:35%;animation-duration:7s;animation-delay:-2s}
+@keyframes blobF{from{transform:scale(1)}to{transform:scale(1.18) translate(25px,20px)}}
+
+/* ── canvas ── */
+#cv{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35}
+
+/* ── burst ── */
+#burst{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
+.bh{position:absolute;animation:bhFly .9s ease-out both;}
+@keyframes bhFly{0%{opacity:1;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:var(--bx) scale(1.3)}}
+
+/* ══════════════════
+   MAIN CARD
+══════════════════ */
+#card{
+  position:relative;z-index:10;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,133,161,.2);
+  border-radius:28px;
+  padding:3rem 2.5rem;
+  text-align:center;
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.1);
+  max-width:460px;width:88%;
+  animation:cardPop .7s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes cardPop{from{opacity:0;transform:scale(.85) translateY(28px)}to{opacity:1;transform:none}}
+
+.bear{
+  font-size:clamp(3.5rem,14vw,6rem);
+  display:block;margin-bottom:.5rem;
+  animation:bearB 2s ease-in-out infinite;
+  user-select:none;
+}
+@keyframes bearB{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+
+.question{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.9rem,6vw,2.8rem);
+  font-weight:300;color:#fff;
+  margin:.6rem 0 .35rem;line-height:1.2;
+}
+.question em{color:var(--rose);font-style:italic}
+
+.sub-txt{
+  font-size:.9rem;color:rgba(255,255,255,.38);
+  margin-bottom:2rem;font-weight:200;
+  min-height:1.3em;
+  transition:all .3s;
+}
+
+/* ── buttons row ── */
+.btns{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  align-items:center;
+}
+
+/* YES — stays fixed, only grows */
+#yesBtn{
+  background:linear-gradient(135deg,var(--rose),#c0394e);
+  color:#fff;border:none;
+  padding:.85rem 2.2rem;
+  border-radius:50px;
+  font-size:1rem;font-weight:500;letter-spacing:1px;
+  box-shadow:0 8px 28px rgba(255,77,109,.4);
+  cursor:pointer;
+  transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
+  animation:yesPulse 2.5s ease-in-out infinite;
+  transform-origin:center;
+  flex-shrink:0;
+}
+#yesBtn:hover{box-shadow:0 14px 36px rgba(255,77,109,.65)}
+@keyframes yesPulse{
+  0%,100%{box-shadow:0 8px 28px rgba(255,77,109,.4)}
+  50%{box-shadow:0 8px 40px rgba(255,77,109,.7),0 0 0 6px rgba(255,77,109,.12)}
+}
+
+/* NO — shrinks & jiggles */
+#noBtn{
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.15);
+  padding:.85rem 2.2rem;
+  border-radius:50px;
+  font-size:1rem;font-weight:300;
+  cursor:pointer;
+  transition:font-size .35s, opacity .35s, padding .35s, background .2s;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+#noBtn:hover{background:rgba(255,255,255,.13)}
+
+/* jiggle animation triggered by JS */
+@keyframes jiggle{
+  0%{transform:translate(0,0) rotate(0deg)}
+  20%{transform:translate(-6px,-4px) rotate(-4deg)}
+  40%{transform:translate(6px,3px) rotate(4deg)}
+  60%{transform:translate(-5px,2px) rotate(-3deg)}
+  80%{transform:translate(4px,-3px) rotate(2deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+.jiggle{animation:jiggle .35s ease-in-out both}
+
+/* no message */
+#noMsg{
+  font-size:.82rem;color:rgba(255,255,255,.45);
+  font-style:italic;margin-top:1.2rem;
+  min-height:1.2em;
+  transition:opacity .4s;
+  opacity:0;
+}
+
+/* ══════════════════
+   YES SCREEN
+══════════════════ */
+#yesScreen{
+  display:none;
+  position:fixed;inset:0;z-index:500;
+  background:linear-gradient(135deg,#0d0010,#1a0820,#0d000a);
+  align-items:center;justify-content:center;
+  flex-direction:column;
+  text-align:center;padding:2rem;
+  animation:none;
+}
+#yesScreen.show{display:flex}
+
+.yes-emoji{
+  font-size:clamp(5rem,18vw,8rem);
+  display:block;margin-bottom:1rem;
+  animation:yesBounce .5s ease-in-out infinite alternate;
+}
+@keyframes yesBounce{
+  from{transform:scale(1) rotate(-6deg)}
+  to{transform:scale(1.18) rotate(6deg)}
+}
+.yes-title{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2rem,8vw,4rem);
+  background:linear-gradient(135deg,var(--rose),var(--gold),var(--lilac));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:.8rem;
+  animation:glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{filter:drop-shadow(0 0 8px rgba(255,77,109,.4))}
+  to{filter:drop-shadow(0 0 28px rgba(255,77,109,.85))}
+}
+.yes-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(1.1rem,3.5vw,1.5rem);
+  color:rgba(255,255,255,.65);
+  max-width:420px;line-height:1.8;
+}
+
+/* ══════════════════
+   FELL SCREEN
+══════════════════ */
+#fellScreen{
+  display:none;
+  position:fixed;inset:0;z-index:500;
+  background:linear-gradient(135deg,#0a0014,#1a0010);
+  align-items:center;justify-content:center;
+  flex-direction:column;
+  text-align:center;padding:2rem;
+}
+#fellScreen.show{display:flex}
+
+.fell-emoji{
+  font-size:clamp(4rem,15vw,7rem);
+  display:block;margin-bottom:.8rem;
+  animation:fellDrop .7s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes fellDrop{
+  0%{transform:translateY(-50px) rotate(0deg);opacity:0}
+  65%{transform:translateY(8px) rotate(18deg)}
+  82%{transform:translateY(-4px) rotate(-8deg)}
+  100%{transform:translateY(0) rotate(14deg);opacity:1}
+}
+.fell-title{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.6rem,5vw,2.6rem);
+  color:var(--rose);margin-bottom:.6rem;
+}
+.fell-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1rem,3vw,1.3rem);
+  color:rgba(255,255,255,.55);
+  max-width:380px;line-height:1.8;margin-bottom:2rem;
+}
+.fell-retry{
+  background:linear-gradient(135deg,var(--rose),#c0394e);
+  color:#fff;border:none;
+  padding:.9rem 2.5rem;border-radius:50px;
+  font-size:.9rem;font-weight:500;letter-spacing:1px;
+  box-shadow:0 8px 28px rgba(255,77,109,.4);
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+}
+.fell-retry:hover{transform:scale(1.06);box-shadow:0 14px 40px rgba(255,77,109,.6)}
+
+/* ── responsive ── */
+@media(max-width:420px){
+  #card{padding:2.2rem 1.4rem}
+  .btns{gap:.7rem}
+  #yesBtn,#noBtn{padding:.75rem 1.5rem}
+}
+@media(hover:none){body{cursor:auto}}
+</style>
+</head>
+<body>
+
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<canvas id="cv"></canvas>
+<div id="burst"></div>
+
+<!-- ══ MAIN CARD ══ -->
+<div id="card">
+  <span class="bear" id="bear">🐻</span>
+  <h1 class="question">Can you be my<br><em>date?</em> 🥺</h1>
+  <p class="sub-txt" id="subTxt">I promise I'll be on my best behaviour…</p>
+
+  <div class="btns">
+    <button id="yesBtn" onclick="sayYes()">Yes!! 💖</button>
+    <button id="noBtn" id="noBtn">No 🙃</button>
+  </div>
+
+  <p id="noMsg"></p>
+</div>
+
+<!-- ══ YES SCREEN ══ -->
+<div id="yesScreen">
+  <span class="yes-emoji">🥳</span>
+  <h2 class="yes-title">YAY!! She said yes!</h2>
+  <p class="yes-sub">This is going to be the best date ever ❤️</p>
+</div>
+
+<!-- ══ FELL SCREEN ══ -->
+<div id="fellScreen">
+  <span class="fell-emoji">🤕</span>
+  <h2 class="fell-title">Oops… you fell!</h2>
+  <p class="fell-sub">You ran away too much and tripped 😂<br>Maybe that's a sign you should just say yes?</p>
+  <button class="fell-retry" onclick="sayYes()">Okay fine… Yes 💖</button>
+</div>
+
+<script>
+(function(){
+
+var noCount  = 0;
+var yesShown = false;
+var noTimer  = null;
+var isMobile = ('ontouchstart' in window);
+
+var bears = ["🐻","🐻‍❄️","🐼","🥺","😟","😢","😭","🙏","💔","🫶","🥰"];
+
+var noMsgs = [
+  "Really? 🥺",
+  "Are you sure? 😟",
+  "Think again…",
+  "My heart 💔",
+  "I have snacks!! 🍿",
+  "What if… yes? 👉👈",
+  "I'll behave, I promise 🙏",
+  "Pleaaase? 🥺🥺",
+  "The flowers are ready…",
+  "Last chance!! 😤",
+  "COME BACK!! 😭",
+  "Nooooo 😭",
+  "fine… 😔"
+];
+
+var subMsgs = [
+  "I promise I'll be on my best behaviour…",
+  "I even picked a restaurant 🍽️",
+  "I've been practicing my jokes 😅",
+  "The answer starts with Y…",
+  "Your heart is saying yes, I can tell 💓",
+  "Almost there… just say it 🥹",
+  "We both know how this ends 😌",
+];
+
+/* ── canvas hearts ── */
+(function(){
+  var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),pts=[];
+  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize,{passive:true});
+  var cols=['#ff4d6d','#ff85a1','#ffb3c1','#ffca3a','#c77dff'];
+  for(var i=0;i<20;i++) pts.push({
+    x:Math.random()*window.innerWidth,
+    y:Math.random()*window.innerHeight+window.innerHeight,
+    s:3+Math.random()*10,vy:-(0.2+Math.random()*.6),
+    vx:(Math.random()-.5)*.4,op:.07+Math.random()*.25,
+    col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.015
+  });
+  function hp(ctx,x,y,s){
+    ctx.beginPath();ctx.moveTo(x,y+s*.3);
+    ctx.bezierCurveTo(x,y,x-s*.5,y,x-s*.5,y+s*.3);
+    ctx.bezierCurveTo(x-s*.5,y+s*.65,x,y+s*.9,x,y+s);
+    ctx.bezierCurveTo(x,y+s*.9,x+s*.5,y+s*.65,x+s*.5,y+s*.3);
+    ctx.bezierCurveTo(x+s*.5,y,x,y,x,y+s*.3);ctx.closePath();
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    pts.forEach(function(p){
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.globalAlpha=p.op;ctx.fillStyle=p.col;
+      hp(ctx,-p.s/2,-p.s/2,p.s);ctx.fill();ctx.restore();
+      p.y+=p.vy;p.x+=p.vx;p.rot+=p.rv;
+      if(p.y<-20){p.y=cv.height+20;p.x=Math.random()*cv.width;}
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── burst hearts ── */
+function burst(x,y,count,big){
+  var el,ems=['💕','🌸','❤️','💖','✨','💗','🌹','💓'],cnt=document.getElementById('burst');
+  for(var i=0;i<(count||12);i++){
+    el=document.createElement('div');el.className='bh';
+    el.textContent=ems[Math.floor(Math.random()*ems.length)];
+    var a=Math.random()*Math.PI*2,d=(big?100:55)+Math.random()*90;
+    var tx='translate(calc(-50% + '+Math.cos(a)*d+'px),calc(-50% + '+(Math.sin(a)*d-45)+'px))';
+    el.style.cssText='left:'+x+'px;top:'+y+'px;font-size:'+(big?(1.4+Math.random()*1.4):(0.9+Math.random()))+
+      'rem;--bx:'+tx+';animation-delay:'+Math.random()*.18+'s';
+    cnt.appendChild(el);
+    setTimeout(function(e){return function(){e.parentNode&&e.parentNode.removeChild(e)}}(el),1100);
+  }
+}
+
+/* ── YES ── */
+window.sayYes = function(){
+  if(yesShown)return;
+  yesShown=true;
+  clearTimeout(noTimer);
+  // close fell screen if open
+  document.getElementById('fellScreen').classList.remove('show');
+  // burst
+  burst(window.innerWidth/2,window.innerHeight/2,28,true);
+  var r=0,rain=setInterval(function(){
+    burst(Math.random()*window.innerWidth,Math.random()*window.innerHeight*.5,4,false);
+    if(++r>10)clearInterval(rain);
+  },230);
+  setTimeout(function(){
+    document.getElementById('yesScreen').classList.add('show');
+  },480);
+};
+
+/* ── NO ── */
+var noBtn  = document.getElementById('noBtn');
+var yesBtn = document.getElementById('yesBtn');
+
+/* Make NO fixed-positioned so it can move freely */
+function makeNoFixed(){
+  if(noBtn.style.position === 'fixed') return;
+  var r = noBtn.getBoundingClientRect();
+  noBtn.style.position  = 'fixed';
+  noBtn.style.left      = r.left + 'px';
+  noBtn.style.top       = r.top  + 'px';
+  noBtn.style.margin    = '0';
+  noBtn.style.zIndex    = '200';
+}
+
+function moveNoBtn(){
+  var bw = noBtn.offsetWidth  || 100;
+  var bh = noBtn.offsetHeight || 44;
+  var pad = 16;
+  var maxX = window.innerWidth  - bw - pad;
+  var maxY = window.innerHeight - bh - pad;
+  var x = pad + Math.random() * maxX;
+  var y = pad + Math.random() * maxY;
+  noBtn.style.transition = 'left .22s cubic-bezier(.22,1,.36,1), top .22s cubic-bezier(.22,1,.36,1), font-size .3s, opacity .3s, padding .3s';
+  noBtn.style.left = x + 'px';
+  noBtn.style.top  = y + 'px';
+}
+
+function onNo(){
+  if(yesShown) return;
+  noCount++;
+
+  /* 1. go fixed + move immediately */
+  makeNoFixed();
+  moveNoBtn();
+
+  /* 2. update bear */
+  document.getElementById('bear').textContent = bears[Math.min(noCount, bears.length-1)];
+
+  /* 3. update sub text */
+  document.getElementById('subTxt').textContent = subMsgs[Math.min(noCount-1, subMsgs.length-1)];
+
+  /* 4. show no message */
+  var nm = document.getElementById('noMsg');
+  nm.textContent = noMsgs[Math.min(noCount-1, noMsgs.length-1)];
+  nm.style.opacity = '1';
+  clearTimeout(noTimer);
+  noTimer = setTimeout(function(){ nm.style.opacity='0'; }, 1800);
+
+  /* 5. YES grows — stays fixed in card */
+  var yScale = Math.min(1 + noCount * 0.1, 2.0);
+  yesBtn.style.transform = 'scale(' + yScale + ')';
+
+  /* 6. NO shrinks */
+  noBtn.style.fontSize = Math.max(1.0 - noCount * 0.06, 0.4) + 'rem';
+  noBtn.style.opacity  = Math.max(1 - noCount * 0.07, 0.22);
+  noBtn.style.padding  = Math.max(0.85 - noCount*0.04, 0.3)+'rem '+Math.max(2.2 - noCount*0.1, 0.5)+'rem';
+
+  /* 7. fell after 13 */
+  if(noCount >= 13){
+    setTimeout(function(){
+      document.getElementById('fellScreen').classList.add('show');
+    }, 400);
+  }
+}
+
+/* Desktop: escape on hover */
+if(!isMobile){
+  noBtn.addEventListener('mouseenter', onNo);
+}
+/* Mobile + click fallback */
+noBtn.addEventListener('click', function(e){
+  e.preventDefault();
+  onNo();
+});
+
+})();
+</script>
+</body>
+</html>
