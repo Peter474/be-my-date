@@ -3,141 +3,187 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vowly — Will you be my date? 🥺</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Pacifico&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<title>Vekii, will you be my date?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400;1,9..144,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --rose:#ff4d6d;--rose2:#ff85a1;--blush:#ffb3c1;
-  --gold:#ffca3a;--lilac:#c77dff;--dark:#1a0814;
+  --bg:#1b1420;
+  --bg2:#241a2b;
+  --ink:#f5ece6;
+  --ink-soft:#c9b8c3;
+  --ink-faint:#8f7d8a;
+  --rose:#e4879e;
+  --rose-deep:#c96079;
+  --gold:#d9b26a;
+  --line:rgba(245,236,230,.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;min-height:100%;overflow-x:hidden}
+html,body{width:100%;min-height:100%}
 body{
   font-family:'DM Sans',sans-serif;
-  background:var(--dark);
-  color:#fff;
+  background:
+    radial-gradient(ellipse 900px 600px at 20% -10%, rgba(228,135,158,.10), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 90% 100%, rgba(217,178,106,.07), transparent 60%),
+    var(--bg);
+  color:var(--ink);
   display:flex;align-items:center;justify-content:center;
   min-height:100svh;
-  position:relative;
+  padding:2rem 1rem;
 }
 
-/* ── blobs ── */
-.blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.22;pointer-events:none;animation:blobF ease-in-out infinite alternate;}
-.b1{width:500px;height:500px;background:var(--rose);top:-150px;left:-150px;animation-duration:9s}
-.b2{width:400px;height:400px;background:var(--lilac);bottom:-120px;right:-120px;animation-duration:12s;animation-delay:-4s}
-.b3{width:280px;height:280px;background:var(--gold);top:40%;left:35%;animation-duration:7s;animation-delay:-2s}
-@keyframes blobF{from{transform:scale(1)}to{transform:scale(1.18) translate(25px,20px)}}
-
-/* ── canvas ── */
-#cv{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35}
-
-/* ── burst ── */
 #burst{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
-.bh{position:absolute;animation:bhFly .9s ease-out both;}
-@keyframes bhFly{0%{opacity:1;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:var(--bx) scale(1.3)}}
+.bh{position:absolute;animation:bhFly 1s ease-out both;opacity:.9}
+@keyframes bhFly{0%{opacity:.9;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:var(--bx) scale(1)}}
 
 /* ══════════════════
    MAIN CARD
 ══════════════════ */
 #card{
   position:relative;z-index:10;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,133,161,.2);
-  border-radius:28px;
-  padding:3rem 2.5rem;
+  background:linear-gradient(180deg, rgba(245,236,230,.05), rgba(245,236,230,.02));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:3.2rem 2.6rem 2.6rem;
   text-align:center;
-  backdrop-filter:blur(18px);
-  box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.1);
-  max-width:460px;width:88%;
-  animation:cardPop .7s cubic-bezier(.22,1,.36,1) both;
+  max-width:420px;width:100%;
+  animation:fadeUp .8s cubic-bezier(.19,1,.22,1) both;
 }
-@keyframes cardPop{from{opacity:0;transform:scale(.85) translateY(28px)}to{opacity:1;transform:none}}
-
-.bear{
-  font-size:clamp(3.5rem,14vw,6rem);
-  display:block;margin-bottom:.5rem;
-  animation:bearB 2s ease-in-out infinite;
-  user-select:none;
+#card::before{
+  content:"";display:block;width:34px;height:1px;
+  background:var(--gold);margin:0 auto 1.4rem;opacity:.6;
 }
-@keyframes bearB{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
+.ring{
+  width:56px;height:56px;margin:0 auto 1.3rem;
+  border-radius:50%;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.ring::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(228,135,158,.4);
+  animation:breathe 3.2s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.22);opacity:0}}
+.ring svg{width:20px;height:20px}
+
+.eyebrow{
+  font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold);opacity:.85;margin-bottom:.9rem;font-weight:500;
+}
 .question{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.9rem,6vw,2.8rem);
-  font-weight:300;color:#fff;
-  margin:.6rem 0 .35rem;line-height:1.2;
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(1.7rem,6vw,2.35rem);
+  line-height:1.28;
+  color:var(--ink);
+  margin-bottom:.7rem;
 }
-.question em{color:var(--rose);font-style:italic}
+.question em{font-style:italic;color:var(--rose);font-weight:400}
 
 .sub-txt{
-  font-size:.9rem;color:rgba(255,255,255,.38);
-  margin-bottom:2rem;font-weight:200;
+  font-size:.92rem;color:var(--ink-soft);
+  margin-bottom:2.1rem;font-weight:300;
   min-height:1.3em;
-  transition:all .3s;
+  transition:opacity .3s;
 }
 
-/* ── buttons row ── */
-.btns{
-  display:flex;
-  gap:1rem;
-  justify-content:center;
-  align-items:center;
-}
+.btns{display:flex;gap:.9rem;justify-content:center;align-items:center;flex-wrap:wrap}
 
-/* YES — stays fixed, only grows */
 #yesBtn{
-  background:linear-gradient(135deg,var(--rose),#c0394e);
-  color:#fff;border:none;
-  padding:.85rem 2.2rem;
-  border-radius:50px;
-  font-size:1rem;font-weight:500;letter-spacing:1px;
-  box-shadow:0 8px 28px rgba(255,77,109,.4);
+  background:var(--rose-deep);
+  color:#fff8f6;border:none;
+  padding:.82rem 2.1rem;
+  border-radius:10px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.88rem;font-weight:500;letter-spacing:.02em;
   cursor:pointer;
-  transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
-  animation:yesPulse 2.5s ease-in-out infinite;
-  transform-origin:center;
+  transition:background .25s, transform .25s;
   flex-shrink:0;
 }
-#yesBtn:hover{box-shadow:0 14px 36px rgba(255,77,109,.65)}
-@keyframes yesPulse{
-  0%,100%{box-shadow:0 8px 28px rgba(255,77,109,.4)}
-  50%{box-shadow:0 8px 40px rgba(255,77,109,.7),0 0 0 6px rgba(255,77,109,.12)}
-}
+#yesBtn:hover{background:var(--rose)}
 
-/* NO — shrinks & jiggles */
 #noBtn{
-  background:rgba(255,255,255,.08);
-  color:rgba(255,255,255,.5);
-  border:1px solid rgba(255,255,255,.15);
-  padding:.85rem 2.2rem;
-  border-radius:50px;
-  font-size:1rem;font-weight:300;
+  background:transparent;
+  color:var(--ink-faint);
+  border:none;
+  padding:.82rem 1rem;
+  font-family:'DM Sans',sans-serif;
+  font-size:.85rem;font-weight:300;
   cursor:pointer;
-  transition:font-size .35s, opacity .35s, padding .35s, background .2s;
+  text-decoration:underline;
+  text-decoration-color:transparent;
+  transition:color .3s, font-size .3s, opacity .3s;
   flex-shrink:0;
   white-space:nowrap;
 }
-#noBtn:hover{background:rgba(255,255,255,.13)}
+#noBtn:hover{color:var(--ink-soft)}
 
-/* jiggle animation triggered by JS */
-@keyframes jiggle{
-  0%{transform:translate(0,0) rotate(0deg)}
-  20%{transform:translate(-6px,-4px) rotate(-4deg)}
-  40%{transform:translate(6px,3px) rotate(4deg)}
-  60%{transform:translate(-5px,2px) rotate(-3deg)}
-  80%{transform:translate(4px,-3px) rotate(2deg)}
-  100%{transform:translate(0,0) rotate(0deg)}
-}
-.jiggle{animation:jiggle .35s ease-in-out both}
-
-/* no message */
 #noMsg{
-  font-size:.82rem;color:rgba(255,255,255,.45);
-  font-style:italic;margin-top:1.2rem;
+  font-size:.78rem;color:var(--ink-faint);
+  font-style:italic;margin-top:1.1rem;
   min-height:1.2em;
   transition:opacity .4s;
   opacity:0;
 }
+
+/* ══════════════════
+   FORM SCREEN
+══════════════════ */
+#formScreen{
+  display:none;
+  position:fixed;inset:0;z-index:500;
+  background:var(--bg);
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+}
+#formScreen.show{display:flex}
+#formCard{
+  background:linear-gradient(180deg, rgba(245,236,230,.05), rgba(245,236,230,.02));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:2.6rem 2.2rem;
+  text-align:center;
+  max-width:400px;width:100%;
+  animation:fadeUp .5s cubic-bezier(.19,1,.22,1) both;
+}
+.form-title{
+  font-family:'Fraunces',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.5rem,5vw,1.9rem);
+  color:var(--ink);margin-bottom:.35rem;
+}
+.form-sub{
+  font-size:.88rem;color:var(--ink-soft);margin-bottom:1.9rem;font-weight:300;
+}
+.field{text-align:left;margin-bottom:1.15rem}
+.field label{
+  display:block;font-size:.7rem;letter-spacing:.1em;
+  color:var(--gold);margin-bottom:.45rem;text-transform:uppercase;font-weight:500;
+}
+.field input{
+  width:100%;padding:.72rem .85rem;border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(245,236,230,.04);color:var(--ink);
+  font-family:'DM Sans',sans-serif;font-size:.92rem;
+  outline:none;transition:border-color .2s,background .2s;
+}
+.field input:focus{border-color:var(--rose);background:rgba(245,236,230,.07)}
+.field input::-webkit-calendar-picker-indicator{filter:invert(.85);opacity:.6;cursor:pointer}
+
+#sendBtn{
+  width:100%;margin-top:.5rem;
+  background:var(--rose-deep);
+  color:#fff8f6;border:none;padding:.85rem;border-radius:10px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.9rem;font-weight:500;letter-spacing:.02em;cursor:pointer;
+  transition:background .25s;
+}
+#sendBtn:hover{background:var(--rose)}
+#sendBtn:disabled{opacity:.5;cursor:not-allowed}
+.form-note{font-size:.72rem;color:var(--ink-faint);margin-top:1rem}
 
 /* ══════════════════
    YES SCREEN
@@ -145,42 +191,33 @@ body{
 #yesScreen{
   display:none;
   position:fixed;inset:0;z-index:500;
-  background:linear-gradient(135deg,#0d0010,#1a0820,#0d000a);
+  background:var(--bg);
   align-items:center;justify-content:center;
   flex-direction:column;
   text-align:center;padding:2rem;
-  animation:none;
 }
 #yesScreen.show{display:flex}
-
-.yes-emoji{
-  font-size:clamp(5rem,18vw,8rem);
-  display:block;margin-bottom:1rem;
-  animation:yesBounce .5s ease-in-out infinite alternate;
+.yes-ring{
+  width:64px;height:64px;border-radius:50%;
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.4rem;
 }
-@keyframes yesBounce{
-  from{transform:scale(1) rotate(-6deg)}
-  to{transform:scale(1.18) rotate(6deg)}
-}
+.yes-ring svg{width:26px;height:26px}
 .yes-title{
-  font-family:'Pacifico',cursive;
-  font-size:clamp(2rem,8vw,4rem);
-  background:linear-gradient(135deg,var(--rose),var(--gold),var(--lilac));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  margin-bottom:.8rem;
-  animation:glow 2s ease-in-out infinite alternate;
-}
-@keyframes glow{
-  from{filter:drop-shadow(0 0 8px rgba(255,77,109,.4))}
-  to{filter:drop-shadow(0 0 28px rgba(255,77,109,.85))}
+  font-family:'Fraunces',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.6rem,6vw,2.3rem);
+  color:var(--ink);
+  margin-bottom:.7rem;
 }
 .yes-sub{
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic;
-  font-size:clamp(1.1rem,3.5vw,1.5rem);
-  color:rgba(255,255,255,.65);
-  max-width:420px;line-height:1.8;
+  font-size:.92rem;font-weight:300;
+  color:var(--ink-soft);
+  max-width:340px;line-height:1.7;margin-bottom:1.4rem;
+}
+.wa-fallback{
+  font-size:.78rem;color:var(--ink-faint);
+  text-decoration:underline;cursor:pointer;
 }
 
 /* ══════════════════
@@ -189,256 +226,197 @@ body{
 #fellScreen{
   display:none;
   position:fixed;inset:0;z-index:500;
-  background:linear-gradient(135deg,#0a0014,#1a0010);
+  background:var(--bg);
   align-items:center;justify-content:center;
   flex-direction:column;
   text-align:center;padding:2rem;
 }
 #fellScreen.show{display:flex}
-
-.fell-emoji{
-  font-size:clamp(4rem,15vw,7rem);
-  display:block;margin-bottom:.8rem;
-  animation:fellDrop .7s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes fellDrop{
-  0%{transform:translateY(-50px) rotate(0deg);opacity:0}
-  65%{transform:translateY(8px) rotate(18deg)}
-  82%{transform:translateY(-4px) rotate(-8deg)}
-  100%{transform:translateY(0) rotate(14deg);opacity:1}
-}
 .fell-title{
-  font-family:'Pacifico',cursive;
-  font-size:clamp(1.6rem,5vw,2.6rem);
-  color:var(--rose);margin-bottom:.6rem;
+  font-family:'Fraunces',serif;font-weight:300;font-style:italic;
+  font-size:clamp(1.4rem,5vw,1.9rem);
+  color:var(--ink);margin-bottom:.6rem;
 }
 .fell-sub{
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:clamp(1rem,3vw,1.3rem);
-  color:rgba(255,255,255,.55);
-  max-width:380px;line-height:1.8;margin-bottom:2rem;
+  font-size:.88rem;font-weight:300;
+  color:var(--ink-soft);
+  max-width:320px;line-height:1.7;margin-bottom:1.8rem;
 }
 .fell-retry{
-  background:linear-gradient(135deg,var(--rose),#c0394e);
-  color:#fff;border:none;
-  padding:.9rem 2.5rem;border-radius:50px;
-  font-size:.9rem;font-weight:500;letter-spacing:1px;
-  box-shadow:0 8px 28px rgba(255,77,109,.4);
-  cursor:pointer;
-  transition:transform .2s,box-shadow .2s;
+  background:var(--rose-deep);
+  color:#fff8f6;border:none;
+  padding:.85rem 2.2rem;border-radius:10px;
+  font-size:.88rem;font-weight:500;letter-spacing:.02em;
+  cursor:pointer;transition:background .25s;
 }
-.fell-retry:hover{transform:scale(1.06);box-shadow:0 14px 40px rgba(255,77,109,.6)}
+.fell-retry:hover{background:var(--rose)}
 
-/* ── responsive ── */
 @media(max-width:420px){
-  #card{padding:2.2rem 1.4rem}
-  .btns{gap:.7rem}
-  #yesBtn,#noBtn{padding:.75rem 1.5rem}
+  #card,#formCard{padding:2.4rem 1.5rem 2rem}
 }
-@media(hover:none){body{cursor:auto}}
 
-/* ── VOWLY WATERMARK ── */
-.vowly-wm{
-  position:fixed;bottom:1.1rem;left:1.1rem;
-  z-index:500;
-  display:flex;align-items:center;gap:.6rem;
-  background:rgba(14,30,53,.82);
-  border:1px solid rgba(201,168,76,.3);
-  border-radius:50px;
-  padding:.42rem .9rem .42rem .5rem;
-  backdrop-filter:blur(14px);
-  box-shadow:0 4px 22px rgba(0,0,0,.35);
-  text-decoration:none;
-  transition:transform .3s,box-shadow .3s,border-color .3s;
-}
-.vowly-wm:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(201,168,76,.2);
-  border-color:rgba(201,168,76,.55);
-}
-.vowly-wm-logo{
-  width:26px;height:26px;
-  object-fit:contain;
-  filter:drop-shadow(0 0 7px rgba(201,168,76,.45));
-}
-.vowly-wm-text{
-  display:flex;flex-direction:column;line-height:1.15;
-}
-.vowly-wm-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:.8rem;letter-spacing:.22em;
-  color:#e2c47a;
-  text-transform:uppercase;font-weight:400;
-}
-.vowly-wm-sub{
-  font-size:.54rem;letter-spacing:.14em;
-  color:rgba(201,168,76,.45);
-  text-transform:uppercase;
-}
-@media(max-width:400px){
-  .vowly-wm{bottom:.7rem;left:.7rem;padding:.35rem .7rem .35rem .45rem}
-  .vowly-wm-logo{width:22px;height:22px}
-  .vowly-wm-name{font-size:.7rem}
-  .vowly-wm-sub{display:none}
+.credit{
+  position:fixed;bottom:1.1rem;left:0;right:0;
+  text-align:center;z-index:500;
+  font-size:.68rem;letter-spacing:.06em;
+  color:rgba(245,236,230,.22);
 }
 </style>
 </head>
 <body>
 
-<div class="blob b1"></div>
-<div class="blob b2"></div>
-<div class="blob b3"></div>
-<canvas id="cv"></canvas>
 <div id="burst"></div>
-
-<!-- ══ VOWLY WATERMARK ══ -->
-<!-- Watermark links to Vowly landing page — change href to your deployed URL -->
-<a href="https://vowly-wheat.vercel.app/" target="_blank" rel="noopener" class="vowly-wm">
-  <img src="logo.png" alt="Vowly Logo" class="vowly-wm-logo">
-  <div class="vowly-wm-text">
-    <span class="vowly-wm-name">Vowly</span>
-    <span class="vowly-wm-sub">Digital Weddings</span>
-  </div>
-</a>
 
 <!-- ══ MAIN CARD ══ -->
 <div id="card">
-  <span class="bear" id="bear">🐻</span>
-  <h1 class="question">Can you be my<br><em>date?</em> 🥺</h1>
-  <p class="sub-txt" id="subTxt">I promise I'll be on my best behaviour…</p>
+  <div class="ring">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#e4879e" stroke-width="1.3">
+      <path d="M12 20.5c-.3 0-.6-.1-.8-.3C7 16.7 3.5 13.6 3.5 9.8 3.5 7.1 5.6 5 8.3 5c1.5 0 2.9.7 3.7 1.9C12.8 5.7 14.2 5 15.7 5c2.7 0 4.8 2.1 4.8 4.8 0 3.8-3.5 6.9-7.7 10.4-.2.2-.5.3-.8.3z"/>
+    </svg>
+  </div>
+  <p class="eyebrow">An invitation</p>
+  <h1 class="question">Vekii, will you<br>be my <em>date?</em></h1>
+  <p class="sub-txt" id="subTxt">I promise I'll be on my best behaviour.</p>
 
   <div class="btns">
-    <button id="yesBtn" onclick="sayYes()">Yes!! 💖</button>
-    <button id="noBtn" id="noBtn">No 🙃</button>
+    <button id="yesBtn" onclick="showForm()">Yes, I'd love to</button>
+    <button id="noBtn">not this time</button>
   </div>
 
   <p id="noMsg"></p>
 </div>
 
+<!-- ══ FORM SCREEN ══ -->
+<div id="formScreen">
+  <div id="formCard">
+    <h2 class="form-title">Almost there</h2>
+    <p class="form-sub">Pick a time and place that works for you.</p>
+
+    <div class="field">
+      <label for="dateInput">Date &amp; time</label>
+      <input type="datetime-local" id="dateInput"/>
+    </div>
+    <div class="field">
+      <label for="placeInput">Where would you like to go?</label>
+      <input type="text" id="placeInput" placeholder="e.g. that café we talked about"/>
+    </div>
+
+    <button id="sendBtn" onclick="sendToWhatsApp()">Send to Peter</button>
+    <p class="form-note">This opens WhatsApp so I get your answer right away.</p>
+  </div>
+</div>
+
 <!-- ══ YES SCREEN ══ -->
 <div id="yesScreen">
-  <span class="yes-emoji">🥳</span>
-  <h2 class="yes-title">YAY!! She said yes!</h2>
-  <p class="yes-sub">This is going to be the best date ever ❤️</p>
+  <div class="yes-ring">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#d9b26a" stroke-width="1.3">
+      <path d="M12 20.5c-.3 0-.6-.1-.8-.3C7 16.7 3.5 13.6 3.5 9.8 3.5 7.1 5.6 5 8.3 5c1.5 0 2.9.7 3.7 1.9C12.8 5.7 14.2 5 15.7 5c2.7 0 4.8 2.1 4.8 4.8 0 3.8-3.5 6.9-7.7 10.4-.2.2-.5.3-.8.3z"/>
+    </svg>
+  </div>
+  <h2 class="yes-title">See you then</h2>
+  <p class="yes-sub">Sent your date and place my way — can't wait.</p>
+  <span class="wa-fallback" id="waFallback">Didn't open WhatsApp? Tap here</span>
 </div>
 
 <!-- ══ FELL SCREEN ══ -->
 <div id="fellScreen">
-  <span class="fell-emoji">🤕</span>
-  <h2 class="fell-title">Oops… you fell!</h2>
-  <p class="fell-sub">You ran away too much and tripped 😂<br>Maybe that's a sign you should just say yes?</p>
-  <button class="fell-retry" onclick="sayYes()">Okay fine… Yes 💖</button>
+  <h2 class="fell-title">Oops, you tripped</h2>
+  <p class="fell-sub">You ran from that button quite a bit. Maybe that's a sign to just say yes?</p>
+  <button class="fell-retry" onclick="showForm()">Okay, yes</button>
 </div>
+
+<p class="credit">made by Peter</p>
 
 <script>
 (function(){
 
+/* ── change this to your WhatsApp number, country code, no + or leading 0 ── */
+var WHATSAPP_NUMBER = "201225403583";
+
 var noCount  = 0;
-var yesShown = false;
+var doneShown = false;
 var noTimer  = null;
 var isMobile = ('ontouchstart' in window);
-
-var bears = ["🐻","🐻‍❄️","🐼","🥺","😟","😢","😭","🙏","💔","🫶","🥰"];
+var lastWaLink = "";
 
 var noMsgs = [
-  "Really? 🥺",
-  "Are you sure? 😟",
-  "Think again…",
-  "My heart 💔",
-  "I have snacks!! 🍿",
-  "What if… yes? 👉👈",
-  "I'll behave, I promise 🙏",
-  "Pleaaase? 🥺🥺",
-  "The flowers are ready…",
-  "Last chance!! 😤",
-  "COME BACK!! 😭",
-  "Nooooo 😭",
-  "fine… 😔"
+  "Take your time.",
+  "Sure?",
+  "Really sure?",
+  "I picked the place already.",
+  "Last one, promise.",
+  "Okay, okay."
 ];
 
 var subMsgs = [
-  "I promise I'll be on my best behaviour…",
-  "I even picked a restaurant 🍽️",
-  "I've been practicing my jokes 😅",
-  "The answer starts with Y…",
-  "Your heart is saying yes, I can tell 💓",
-  "Almost there… just say it 🥹",
-  "We both know how this ends 😌",
+  "I promise I'll be on my best behaviour.",
+  "I already picked a place.",
+  "The answer starts with Y.",
+  "No pressure. Well, a little.",
 ];
 
-/* ── canvas hearts ── */
-(function(){
-  var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),pts=[];
-  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize,{passive:true});
-  var cols=['#ff4d6d','#ff85a1','#ffb3c1','#ffca3a','#c77dff'];
-  for(var i=0;i<20;i++) pts.push({
-    x:Math.random()*window.innerWidth,
-    y:Math.random()*window.innerHeight+window.innerHeight,
-    s:3+Math.random()*10,vy:-(0.2+Math.random()*.6),
-    vx:(Math.random()-.5)*.4,op:.07+Math.random()*.25,
-    col:cols[Math.floor(Math.random()*cols.length)],
-    rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.015
-  });
-  function hp(ctx,x,y,s){
-    ctx.beginPath();ctx.moveTo(x,y+s*.3);
-    ctx.bezierCurveTo(x,y,x-s*.5,y,x-s*.5,y+s*.3);
-    ctx.bezierCurveTo(x-s*.5,y+s*.65,x,y+s*.9,x,y+s);
-    ctx.bezierCurveTo(x,y+s*.9,x+s*.5,y+s*.65,x+s*.5,y+s*.3);
-    ctx.bezierCurveTo(x+s*.5,y,x,y,x,y+s*.3);ctx.closePath();
-  }
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    pts.forEach(function(p){
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
-      ctx.globalAlpha=p.op;ctx.fillStyle=p.col;
-      hp(ctx,-p.s/2,-p.s/2,p.s);ctx.fill();ctx.restore();
-      p.y+=p.vy;p.x+=p.vx;p.rot+=p.rv;
-      if(p.y<-20){p.y=cv.height+20;p.x=Math.random()*cv.width;}
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-/* ── burst hearts ── */
-function burst(x,y,count,big){
-  var el,ems=['💕','🌸','❤️','💖','✨','💗','🌹','💓'],cnt=document.getElementById('burst');
-  for(var i=0;i<(count||12);i++){
+/* ── quiet burst, used once on final confirmation ── */
+function burst(x,y,count){
+  var el,cnt=document.getElementById('burst');
+  for(var i=0;i<(count||8);i++){
     el=document.createElement('div');el.className='bh';
-    el.textContent=ems[Math.floor(Math.random()*ems.length)];
-    var a=Math.random()*Math.PI*2,d=(big?100:55)+Math.random()*90;
-    var tx='translate(calc(-50% + '+Math.cos(a)*d+'px),calc(-50% + '+(Math.sin(a)*d-45)+'px))';
-    el.style.cssText='left:'+x+'px;top:'+y+'px;font-size:'+(big?(1.4+Math.random()*1.4):(0.9+Math.random()))+
-      'rem;--bx:'+tx+';animation-delay:'+Math.random()*.18+'s';
+    el.style.width='5px';el.style.height='5px';el.style.borderRadius='50%';
+    el.style.background = (i % 2 === 0) ? '#e4879e' : '#d9b26a';
+    var a=Math.random()*Math.PI*2,d=60+Math.random()*70;
+    var tx='translate(calc(-50% + '+Math.cos(a)*d+'px),calc(-50% + '+(Math.sin(a)*d-30)+'px))';
+    el.style.cssText+=';left:'+x+'px;top:'+y+'px;--bx:'+tx+';animation-delay:'+Math.random()*.15+'s';
     cnt.appendChild(el);
     setTimeout(function(e){return function(){e.parentNode&&e.parentNode.removeChild(e)}}(el),1100);
   }
 }
 
-/* ── YES ── */
-window.sayYes = function(){
-  if(yesShown)return;
-  yesShown=true;
+/* ── step 1: Yes -> show the date/place form ── */
+window.showForm = function(){
   clearTimeout(noTimer);
-  // close fell screen if open
   document.getElementById('fellScreen').classList.remove('show');
-  // burst
-  burst(window.innerWidth/2,window.innerHeight/2,28,true);
-  var r=0,rain=setInterval(function(){
-    burst(Math.random()*window.innerWidth,Math.random()*window.innerHeight*.5,4,false);
-    if(++r>10)clearInterval(rain);
-  },230);
-  setTimeout(function(){
-    document.getElementById('yesScreen').classList.add('show');
-  },480);
+  document.getElementById('formScreen').classList.add('show');
 };
 
-/* ── NO ── */
-var noBtn  = document.getElementById('noBtn');
-var yesBtn = document.getElementById('yesBtn');
+/* ── step 2: submit form -> build WhatsApp link ── */
+window.sendToWhatsApp = function(){
+  var dateVal  = document.getElementById('dateInput').value;
+  var placeVal = document.getElementById('placeInput').value.trim();
 
-/* Make NO fixed-positioned so it can move freely */
+  if(!dateVal || !placeVal){
+    var btn = document.getElementById('sendBtn');
+    btn.textContent = "Pick a date and place first";
+    setTimeout(function(){ btn.textContent = "Send to Peter"; }, 1600);
+    return;
+  }
+
+  var d = new Date(dateVal);
+  var niceDate = d.toLocaleString(undefined, {
+    weekday:'long', year:'numeric', month:'long', day:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
+
+  var msg = "Hey Peter! It's a yes — let's do " + niceDate + " at " + placeVal;
+  var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+  lastWaLink = url;
+
+  document.getElementById('formScreen').classList.remove('show');
+  burst(window.innerWidth/2, window.innerHeight/2, 14);
+
+  setTimeout(function(){
+    document.getElementById('yesScreen').classList.add('show');
+    window.open(url, '_blank');
+  }, 300);
+
+  doneShown = true;
+};
+
+document.getElementById('waFallback').addEventListener('click', function(){
+  if(lastWaLink) window.open(lastWaLink, '_blank');
+});
+
+/* ── "not this time" button: gently drifts away, calmer than before ── */
+var noBtn  = document.getElementById('noBtn');
+
 function makeNoFixed(){
   if(noBtn.style.position === 'fixed') return;
   var r = noBtn.getBoundingClientRect();
@@ -450,65 +428,44 @@ function makeNoFixed(){
 }
 
 function moveNoBtn(){
-  var bw = noBtn.offsetWidth  || 100;
-  var bh = noBtn.offsetHeight || 44;
-  var pad = 16;
+  var bw = noBtn.offsetWidth  || 90;
+  var bh = noBtn.offsetHeight || 40;
+  var pad = 20;
   var maxX = window.innerWidth  - bw - pad;
   var maxY = window.innerHeight - bh - pad;
   var x = pad + Math.random() * maxX;
   var y = pad + Math.random() * maxY;
-  noBtn.style.transition = 'left .22s cubic-bezier(.22,1,.36,1), top .22s cubic-bezier(.22,1,.36,1), font-size .3s, opacity .3s, padding .3s';
+  noBtn.style.transition = 'left .32s cubic-bezier(.19,1,.22,1), top .32s cubic-bezier(.19,1,.22,1), opacity .3s';
   noBtn.style.left = x + 'px';
   noBtn.style.top  = y + 'px';
 }
 
 function onNo(){
-  if(yesShown) return;
+  if(doneShown) return;
   noCount++;
 
-  /* 1. go fixed + move immediately */
   makeNoFixed();
   moveNoBtn();
 
-  /* 2. update bear */
-  document.getElementById('bear').textContent = bears[Math.min(noCount, bears.length-1)];
-
-  /* 3. update sub text */
   document.getElementById('subTxt').textContent = subMsgs[Math.min(noCount-1, subMsgs.length-1)];
 
-  /* 4. show no message */
   var nm = document.getElementById('noMsg');
   nm.textContent = noMsgs[Math.min(noCount-1, noMsgs.length-1)];
   nm.style.opacity = '1';
   clearTimeout(noTimer);
   noTimer = setTimeout(function(){ nm.style.opacity='0'; }, 1800);
 
-  /* 5. YES grows — stays fixed in card */
-  var yScale = Math.min(1 + noCount * 0.1, 2.0);
-  yesBtn.style.transform = 'scale(' + yScale + ')';
+  noBtn.style.opacity = Math.max(1 - noCount * 0.09, 0.3);
 
-  /* 6. NO shrinks */
-  noBtn.style.fontSize = Math.max(1.0 - noCount * 0.06, 0.4) + 'rem';
-  noBtn.style.opacity  = Math.max(1 - noCount * 0.07, 0.22);
-  noBtn.style.padding  = Math.max(0.85 - noCount*0.04, 0.3)+'rem '+Math.max(2.2 - noCount*0.1, 0.5)+'rem';
-
-  /* 7. fell after 13 */
-  if(noCount >= 13){
+  if(noCount >= 8){
     setTimeout(function(){
       document.getElementById('fellScreen').classList.add('show');
     }, 400);
   }
 }
 
-/* Desktop: escape on hover */
-if(!isMobile){
-  noBtn.addEventListener('mouseenter', onNo);
-}
-/* Mobile + click fallback */
-noBtn.addEventListener('click', function(e){
-  e.preventDefault();
-  onNo();
-});
+if(!isMobile){ noBtn.addEventListener('mouseenter', onNo); }
+noBtn.addEventListener('click', function(e){ e.preventDefault(); onNo(); });
 
 })();
 </script>
